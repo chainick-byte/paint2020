@@ -53,8 +53,8 @@ public class ClaseBaseDeTodasFormas extends Polygon  {
             //npoints equivale a _lados
             for(int i = 0; i<npoints;i++){
                 //asi se llama internamente a la primera array de las posiciones x
-                xpoints[i] = (int)(x + _radio*Math.cos(2*Math.PI * i +_giro/40/npoints));
-                ypoints[i] = (int)(y + _radio*Math.sin(2*Math.PI * i +_giro/40/npoints));
+                xpoints[i] = (int)(x + _radio*Math.cos((2*Math.PI * i +_giro/40)/npoints));
+                ypoints[i] = (int)(y + _radio*Math.sin((2*Math.PI * i +_giro/40)/npoints));
             }
             
         }
