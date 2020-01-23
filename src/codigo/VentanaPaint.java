@@ -24,7 +24,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     Graphics2D bufferGraphics, jpanelGraphics = null;
     //creamos dos variables para ver el circulo relleno y no tanto
 
-    int herramientaSeleccionada = 0;
+  
     Circulo miCirculo = null;
 
     /**
@@ -108,12 +108,6 @@ public class VentanaPaint extends javax.swing.JFrame {
             .addGap(0, 338, Short.MAX_VALUE)
         );
 
-        herramientas1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                herramientas1MousePressed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,7 +141,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         // aqui dibujamos un punto pa eso necesitamos coordenadas y color 
         //coordinadas proporciona evt
         //aqui el colo hay que pasar con un metodo y podremos dibujar de diferentes colores
-        switch (herramientaSeleccionada) {
+        switch (herramientas1.formElegida) {
             case 0:
                 bufferGraphics.setColor(colores2.colorSeleccionado);
                 bufferGraphics.fillOval(evt.getX(), evt.getY(), 5, 5);
@@ -159,17 +153,14 @@ public class VentanaPaint extends javax.swing.JFrame {
         }
         repaint(0, 0, 1, 1);
     }//GEN-LAST:event_jPanel1MouseDragged
-//dividimos el circulo en tres fases:1 mouse>Clicked donde pinchamos, segundo donde arrastrramos mousePressed
-    private void herramientas1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_herramientas1MousePressed
-       herramientaSeleccionada=1;//camio a pintar circulos
-    }//GEN-LAST:event_herramientas1MousePressed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-       switch (herramientaSeleccionada) {
+       switch (herramientas1.formElegida) {
             case 0:
                 break;
             case 1:
                 miCirculo=new Circulo(evt.getX(), evt.getY(), 1, colores2.colorSeleccionado, false);
+                miCirculo.dibujaTe(bufferGraphics, evt.getX());
                 break;
           
         }
