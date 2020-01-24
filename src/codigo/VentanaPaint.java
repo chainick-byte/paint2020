@@ -9,6 +9,8 @@ import codigo.figuras.Circulo;
 import codigo.figuras.ClaseBaseDeTodasFormas;
 import codigo.figuras.Estrella;
 import codigo.figuras.Pentagono;
+import java.awt.BasicStroke;
+import static java.awt.BasicStroke.JOIN_MITER;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,6 +21,21 @@ import java.awt.image.BufferedImage;
  * @author xp
  */
 public class VentanaPaint extends javax.swing.JFrame {
+    BasicStroke trazo1= new BasicStroke(15);
+    BasicStroke trazo2=new BasicStroke(15,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER,  10.0f, new float[]{10.0f}, 0.0f);
+            
+            
+                  
+           
+                   
+    private int x1;
+    private int x2;
+    private int y1;
+    private int y2;
+    private double xOrigen;
+    private double yOrigen;
+    private boolean flagPaint=false;
+   
 
     //acelera la lectura de una informacion de disco duro a la memoria
     BufferedImage buffer, buffer2 = null;
@@ -29,7 +46,7 @@ public class VentanaPaint extends javax.swing.JFrame {
 
     Circulo miCirculo = null;
     ClaseBaseDeTodasFormas miForma = null;
-    ClaseBaseDeTodasFormas Estrella = null;
+    ClaseBaseDeTodasFormas Estrella = new ClaseBaseDeTodasFormas(-1, -1, 0, Color.white,false);
 
     /**
      * Creates new form VentanaPaint
@@ -38,6 +55,8 @@ public class VentanaPaint extends javax.swing.JFrame {
 
         initComponents();
         inicializaBuffers();
+        
+        
 
     }
 
@@ -72,7 +91,8 @@ public class VentanaPaint extends javax.swing.JFrame {
     public void paint(Graphics g) {
         //super llama a jFrame donde esta el paint original y lo haga todo lo que estaba haciendo antes pero ademas algo mas
         super.paint(g);
-        //aqui añadimos ya nuestra funciones!!!!
+        
+        //aqui añadimos ya nustra funciones!!!!
         //pinto el buffer sobre el jPANELel1
         //drawImage sirve para almacenar la imagen en la memoria , si en vez de null ponemos otra cosa aparace la imagen de la memoria
         jpanelGraphics.drawImage(buffer, 0, 0, null);
@@ -121,6 +141,12 @@ public class VentanaPaint extends javax.swing.JFrame {
             .addGap(0, 338, Short.MAX_VALUE)
         );
 
+        herramientas1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                herramientas1MouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,8 +183,14 @@ public class VentanaPaint extends javax.swing.JFrame {
         bufferGraphics.drawImage(buffer2, 0, 0,null);
         switch (herramientas1.formElegida) {
             case 0:
-                bufferGraphics.setColor(colores2.colorSeleccionado);
-                bufferGraphics.fillOval(evt.getX(), evt.getY(), 5, 5);
+                x2=evt.getX();
+                y2=evt.getY();
+                if(x1!=x2 || y1!=y2){
+                bufferGraphics2.setColor(colores2.colorSeleccionado);
+                bufferGraphics2.drawLine(x1, y1, x2, y2);
+                x1=x2;
+                y1=y2;
+                }
                 break;
             case 1:
                 miCirculo.dibujaTe(bufferGraphics, evt.getX());
@@ -177,17 +209,19 @@ public class VentanaPaint extends javax.swing.JFrame {
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
         switch (herramientas1.formElegida) {
             case 0:
+                x1=evt.getX();
+                y1=evt.getY();
                 break;
             case 1:
-                miCirculo = new Circulo(evt.getX(), evt.getY(), 1, colores2.colorSeleccionado, false);
+                miCirculo = new Circulo(evt.getX(), evt.getY(), 1, colores2.colorSeleccionado, herramientas1.relleno);
                 miCirculo.dibujaTe(bufferGraphics, evt.getX());
                 break;
             case 5:
-                miForma = new Pentagono(evt.getX(), evt.getY(), 5, colores2.colorSeleccionado, false);
+                miForma = new Pentagono(evt.getX(), evt.getY(), 5, colores2.colorSeleccionado, herramientas1.relleno);
                 miForma.dibujaTe(bufferGraphics, evt.getX(), evt.getY());
                 break;
             case 256:
-                miForma = new Estrella(evt.getX(), evt.getY(), 256, colores2.colorSeleccionado, false);
+                miForma = new Estrella(evt.getX(), evt.getY(), 256, colores2.colorSeleccionado, herramientas1.relleno);
                 miForma.dibujaTe(bufferGraphics, evt.getX(), evt.getY());
                 break;
 
@@ -195,8 +229,18 @@ public class VentanaPaint extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MousePressed
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
-         miForma.dibujaTe(bufferGraphics2, evt.getX(), evt.getY());
+         
+         //si es el circulo se dibuja en buffer2 ya que no es la clasede forma elegida
+         if(herramientas1.formElegida==1){
+             miCirculo.dibujaTe(bufferGraphics2, evt.getX());
+         } else if (herramientas1.formElegida!=0){
+             miForma.dibujaTe(bufferGraphics2, evt.getX(), evt.getY());
+         }
     }//GEN-LAST:event_jPanel1MouseReleased
+
+    private void herramientas1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_herramientas1MouseReleased
+       
+    }//GEN-LAST:event_herramientas1MouseReleased
 
     /**
      * @param args the command line arguments

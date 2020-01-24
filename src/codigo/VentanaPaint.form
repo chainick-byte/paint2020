@@ -84,6 +84,9 @@
     <Component class="codigo.Colores" name="colores2">
     </Component>
     <Component class="codigo.Herramientas" name="herramientas1">
+      <Events>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="herramientas1MouseReleased"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
